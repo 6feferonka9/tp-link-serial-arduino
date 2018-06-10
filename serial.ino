@@ -1,7 +1,5 @@
 String inputString = "";
 boolean stringComplete = false;
-String input = "";
-String br1 = "Autobooting in 1 seconds";
 boolean done = false;
 boolean gg = true;
 
@@ -15,12 +13,10 @@ void loop() {
     if(done == false){
       Serial.println(inputString);
     }
-
     if(inputString.indexOf("Autobooting in 1 seconds") >= 0){
       Serial.println(F("tpl"));
       done = true;
     }   
-  
     inputString = "";
     stringComplete = false;
   }
@@ -30,14 +26,13 @@ void serialEvent() {
   while (Serial.available()) {
     char inChar = (char)Serial.read();
     inputString += inChar;
-
     if (inChar == '\n') {
       stringComplete = true;
     }
 
     if (done){
        Serial.println(Serial.readString());
-
+       
        if(gg){
           if(Serial.readString().indexOf("wasp>") >= 0){
             Serial.println(F("setenv ipaddr 192.168.0.1"));
@@ -54,20 +49,9 @@ void serialEvent() {
           if(Serial.readString().indexOf("Erased") >= 0){
             Serial.println(F("cp.b 0x80000000 0x9f020000 3c0000"));
             gg = false;
-          }    
-          if(Serial.readString().indexOf("on") >= 0){
-            Serial.println(F("reboot"));
-            gg = false;
-          }            
-     
-       }
-                                
+          }  
+          //reboot manualy         
+       }                      
     }
-    
   }
 }
-
-
-
-
-
